@@ -15,13 +15,13 @@
 **1. AWS Fargate** - The project demonstrates the use of AWS Fargate, which alows you to run containers without having to manage servers or clusters. It can currently be used on top of AWS Elastic Container Service (ECS) with support for Kubernetes (EKS). Bringing Serverless to Microservice is the main objective of this project, where all the underlying resources are managed by AWS Fargate and the whole platform is provisioned with Terraform.
 [https://github.com/vjsairam/DevOps/tree/master/Cloud_Containers/aws_python_terraform](https://github.com/vjsairam/DevOps/tree/master/Cloud_Containers/aws_python_terraform)
 
-**Serverless** - The project demonstrates the use of AWS SAM to deploy the serverless applications using CodePipeline. 
+**2. Serverless** - The project demonstrates the use of AWS SAM to deploy the serverless applications using CodePipeline. 
 
 ---
 ## Chatsbots
 
-**1.Alexa Skill** - The project outlines the simple use of Alexa and Lambda functions to have the common questions answered through Amazon Echo.
-[https://github.com/vjsairam/DevOps/blob/master/Chatbots] (https://github.com/vjsairam/DevOps/blob/master/Chatbots)
+**1. Alexa Skill** - The project outlines the simple use of Alexa and Lambda functions to have the common questions answered through Amazon Echo.
+[https://github.com/vjsairam/DevOps/blob/master/Chatbots](https://github.com/vjsairam/DevOps/blob/master/Chatbots)
 
 
 ### Category Name 1 
