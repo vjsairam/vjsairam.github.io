@@ -4,16 +4,6 @@
 
 ---
 
-## Continuous Integration
-
-**1. Continuous Integration using Shared Libraries** - Jenkins, Morpheus.
-The project outlines establishes the automated version of using Morpheus as a CI CD tool, the use of shared libraries and the complete demonstration of the pipeline workflow. 
-[https://github.com/vjsairam/DevOps/tree/master/Cloud_Containers/liquidplatform_cicd](https://github.com/vjsairam/DevOps/tree/master/Cloud_Containers/liquidplatform_cicd)
-
-**2. CI/CD with Ansible, Jenkins and Helm for Kubernetes** - 
-The project outlines the complete CI CD process, using the above stack for Kubernetes to deploy any applications with no downtime. The complete setup is focused on driving Infrastructure as Code and gives a high level overview on using the Helm charts for managing different application under Kubernetes. 
-[https://github.com/vjsairam/DevOps/tree/master/Continuous_Integration/ci_node](https://github.com/vjsairam/DevOps/tree/master/Continuous_Integration/ci_node)
-
 ## Cloud & Containers
 
 **1. Scraping Application** - AWS Fargate, Docker, Terraform, Python.
@@ -25,6 +15,19 @@ The project demonstrates the use of AWS SAM to deploy the serverless application
 [https://github.com/vjsairam/DevOps/tree/master/Cloud_Containers/aws_serverless](https://github.com/vjsairam/DevOps/tree/master/Cloud_Containers/aws_serverless)
 
 ---
+
+## Continuous Integration
+
+**1. Continuous Integration using Shared Libraries** - Jenkins, Morpheus.
+The project outlines establishes the automated version of using Morpheus as a CI CD tool, the use of shared libraries and the complete demonstration of the pipeline workflow. 
+[https://github.com/vjsairam/DevOps/tree/master/Cloud_Containers/liquidplatform_cicd](https://github.com/vjsairam/DevOps/tree/master/Cloud_Containers/liquidplatform_cicd)
+
+**2. CI/CD with Ansible, Jenkins and Helm for Kubernetes** - 
+The project outlines the complete CI CD process, using the above stack for Kubernetes to deploy any applications with no downtime. The complete setup is focused on driving Infrastructure as Code and gives a high level overview on using the Helm charts for managing different application under Kubernetes. 
+[https://github.com/vjsairam/DevOps/tree/master/Continuous_Integration/ci_node](https://github.com/vjsairam/DevOps/tree/master/Continuous_Integration/ci_node)
+
+---
+
 ## Chatsbots
 
 **1. FAQ Skill** - Alexa, Lambda.
