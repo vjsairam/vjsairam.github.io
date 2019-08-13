@@ -10,10 +10,7 @@
 The project outlines establishes the automated version of using Morpheus as a CI CD tool, the use of shared libraries and the complete demonstration of the pipeline workflow. 
 [https://github.com/vjsairam/DevOps/tree/master/Cloud_Containers/liquidplatform_cicd](https://github.com/vjsairam/DevOps/tree/master/Cloud_Containers/liquidplatform_cicd)
 
-**2. Continuous Integration with Container CI** - Concourse CI.
-The project outlines the CI process using ephemeral Containers for the CI and CD process, [https://github.com/vjsairam/DevOps/tree/master/Continuous_Integration/Concourse](https://github.com/vjsairam/DevOps/tree/master/Continuous_Integration/Concourse)
-
-**3. CI/CD with Ansible, Jenkins and Helm for Kubernetes** - 
+**2. CI/CD with Ansible, Jenkins and Helm for Kubernetes** - 
 The project outlines the complete CI CD process, using the above stack for Kubernetes to deploy any applications with no downtime. The complete setup is focused on driving Infrastructure as Code and gives a high level overview on using the Helm charts for managing different application under Kubernetes. 
 [https://github.com/vjsairam/DevOps/tree/master/Continuous_Integration/ci_node](https://github.com/vjsairam/DevOps/tree/master/Continuous_Integration/ci_node)
 
