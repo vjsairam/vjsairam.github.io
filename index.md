@@ -23,8 +23,9 @@ The project outlines the complete CI CD process, using the above stack for Kuber
 The project demonstrates the use of AWS Fargate, which alows you to run containers without having to manage servers or clusters. It can currently be used on top of AWS Elastic Container Service (ECS) with support for Kubernetes (EKS). Bringing Serverless to Microservice is the main objective of this project, where all the underlying resources are managed by AWS Fargate and the whole platform is provisioned with Terraform.
 [https://github.com/vjsairam/DevOps/tree/master/Cloud_Containers/aws_python_terraform](https://github.com/vjsairam/DevOps/tree/master/Cloud_Containers/aws_python_terraform)
 
-**2. Serverless** - AWS SAM, CodeCommit, CodePipeline, CodeBuild, CloudFormation, API Gateway, AWS Lambda, DynamoDB
-The project demonstrates the use of AWS SAM to deploy the serverless applications using CodePipeline. 
+**2. Serverless** - AWS SAM, CodeCommit, CodePipeline, CodeBuild, CloudFormation, API Gateway, AWS Lambda, DynamoDB.
+The project demonstrates the use of AWS SAM to deploy the serverless applications using CodePipeline. Cloud Native solution for complete CI and CD and canary deployment with ChangeSet approval. 
+[https://github.com/vjsairam/DevOps/tree/master/Cloud_Containers/aws_serverless](https://github.com/vjsairam/DevOps/tree/master/Cloud_Containers/aws_serverless)
 
 ---
 ## Chatsbots
