@@ -3,7 +3,7 @@ logo: "/images/image.png?raw=true" # your photo (or logo) here
 description: > # your text below (remove <br> elements if you don't need line breaks)
   DevOps Engineer - 9+ years' of experience 
   <br><br>
-  <a href="https://www.linkedin.com/in/vjsr/">View My LinkedIn Profile</a> 
+  <a href="https://www.linkedin.com/in/vjsr/">View My LinkedIn Profile</a> <br>
   <a href="https://www.udemy.com/course/helm-the-kubernetes-package-manager-course/?couponCode=HELM12">Helm Course</a> 
 
 theme: jekyll-theme-minimal
