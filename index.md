@@ -39,3 +39,7 @@ The project outlines the simple use of Alexa and Lambda functions to have the co
 ## Ideal CI CD Flow
 
 <img src="CICD.png?raw=true"/>
+
+## Release Management Along with CI CD
+
+<img src="RMCICD.png?raw=true"/>
