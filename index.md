@@ -28,7 +28,7 @@ The project outlines the complete CI CD process, using the above stack for Kuber
 
 ---
 
-## Chatsbots
+## ChatBot
 
 **1. FAQ Skill** - Alexa, Lambda.
 The project outlines the simple use of Alexa and Lambda functions to have the common questions answered through Amazon Echo.
