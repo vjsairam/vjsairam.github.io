@@ -83,24 +83,30 @@
       + cheaper.map(fmtVolume).join(", ") + " requests, and the hosted API at the other volumes shown.";
   }
 
-  function verdict(s, row, qm, qp) {
-    const volume = fmtVolume(VOLUMES[s.volume]);
+  function verdict(s, row, hosted, own) {
+    const volume = VOLUMES[s.volume];
+    const qm = hosted.quality;
+    const qp = own.quality;
     const m = fmtUsd(row.managed);
     const p = fmtUsd(row.private);
+    const perM = fmtUsd(perThousand(row.managed, volume, qm));
+    const perP = fmtUsd(perThousand(row.private, volume, qp));
     const onGpus = gpus(row.replicas);
+    const idle = volume / (row.replicas * data.utilization[s.util]) < 0.5 ? ", which sits mostly idle at this volume" : "";
+    const target = `Neither option met the benchmark's 95% accuracy target here (the best reached ${fmtPct(Math.max(qm, qp))}), so check the accuracy you actually need before choosing.`;
     if (s.private) {
-      if (qp < 0.6) {
-        return `With data that can't leave your environment, an open model on your own GPU is the only option here, and the 7B model I tested got just ${fmtPct(qp)} of these right. A larger open model would likely do better but needs more GPU memory, which changes the cost. Measure that before committing.`;
+      if (hosted.met_targets && !own.met_targets) {
+        return `With data that can't leave your environment, an open model on your own GPU is the only option, and the 7B model I tested got just ${fmtPct(qp)} of these right. Measure another open model's accuracy and cost on your own documents before committing.`;
       }
-      return `With data that can't leave your environment, run the model yourself: about ${p} a month on ${onGpus} at ${volume} requests. On this task it was also the more accurate option, ${fmtPct(qp)} correct against ${fmtPct(qm)} for the hosted model.`;
+      return `With data that can't leave your environment, run the model yourself: about ${p} a month on ${onGpus} at ${fmtVolume(volume)} requests. It got ${fmtPct(qp)} right against ${fmtPct(qm)} for the hosted model, just under the benchmark's 95% target.`;
     }
-    if (qp < 0.6) {
-      return `Use the hosted API for this task. It got ${fmtPct(qm)} right and the open 7B model only ${fmtPct(qp)}, so the cheaper option isn't really an option. At ${volume} requests that's about ${m} a month.`;
+    if (hosted.met_targets && !own.met_targets) {
+      return `Use the hosted API for this task. It was the only option that met its targets, with ${fmtPct(qm)} correct against ${fmtPct(qp)} for the open 7B model. At ${fmtVolume(volume)} requests that's about ${m} a month.`;
     }
-    if (row.private < row.managed) {
-      return `Run it on your own GPU. At ${volume} requests a month it costs about ${p} on ${onGpus} against ${m} for the hosted API, and it got more answers right (${fmtPct(qp)} against ${fmtPct(qm)}).`;
+    if (perThousand(row.private, volume, qp) < perThousand(row.managed, volume, qm)) {
+      return `Your own GPU gives the cheaper correct answer: ${perP} per 1,000 against ${perM} for the hosted API at ${fmtVolume(volume)} requests a month (${p} against ${m} a month). ${target}`;
     }
-    return `Stay on the hosted API for now. At ${volume} requests a month it costs about ${m} against ${p} for your own GPU, which sits mostly idle at this volume. The open model was more accurate on this task (${fmtPct(qp)} against ${fmtPct(qm)}), so it's worth another look as volume grows.`;
+    return `The hosted API gives the cheaper correct answer: ${perM} per 1,000 against ${perP} on your own GPU${idle} (${m} against ${p} a month at ${fmtVolume(volume)} requests). ${target}`;
   }
 
   function fillTile(id, monthly, quality, perK, note, out) {
@@ -109,7 +115,7 @@
     tile.querySelector('[data-k="monthly"]').innerHTML = `${fmtUsd(monthly)}<small> a month${note}</small>`;
     const q = tile.querySelector('[data-k="quality"]');
     q.textContent = fmtPct(quality);
-    q.classList.toggle("bad", quality < 0.6);
+    q.classList.toggle("bad", quality < 0.5);
     tile.querySelector('[data-k="per"]').textContent = fmtUsd(perK);
   }
 
@@ -207,9 +213,11 @@
     const volume = VOLUMES[s.volume];
     document.getElementById("volume-out").textContent = fmtVolume(volume);
     const row = gridRow(s, volume);
-    const qm = measured(s.task, "t0").quality;
-    const qp = measured(s.task, "t1").quality;
-    document.getElementById("verdict").textContent = verdict(s, row, qm, qp);
+    const hosted = measured(s.task, "t0");
+    const own = measured(s.task, "t1");
+    const qm = hosted.quality;
+    const qp = own.quality;
+    document.getElementById("verdict").textContent = verdict(s, row, hosted, own);
     fillTile("tile-managed", row.managed, qm, perThousand(row.managed, volume, qm),
       s.private ? ", not allowed for your data" : "", s.private);
     fillTile("tile-private", row.private, qp, perThousand(row.private, volume, qp), ` on ${gpus(row.replicas)}`, false);
@@ -272,6 +280,7 @@
   });
 
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+    if (!data) return;
     if (chart) { chart.destroy(); chart = null; }
     render();
   });

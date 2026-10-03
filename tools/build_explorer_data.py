@@ -44,6 +44,7 @@ def main() -> int:
             "workload": summary["workload"],
             "requests": int(summary["sample_size"]),
             "quality": summary["quality"]["quality_rate"],
+            "met_targets": summary["slo"]["slo_eligible"],
             "cost_per_correct": run_cost(summary),
             "latency_p50_ms": round(summary["latency_ms"]["p50"]),
             "latency_p95_ms": round(summary["latency_ms"]["p95"]),

@@ -160,7 +160,7 @@
       : "Every service level met its targets.");
 
     const a = d.autoscale;
-    set("scale-title", `A second GPU was requested ${a.trigger_s} s into the load and was serving ${fmtDuration(a.cold_start_s)} later`);
+    set("scale-title", `A second GPU was requested about ${a.trigger_after_first_request_s} s after the load began and reported Ready ${fmtDuration(a.cold_start_s)} later`);
     set("scale-note", `${a.requests.toLocaleString("en-US")} requests at about ${a.requests_per_second} a second on one GPU, with KEDA watching the model server's queue. The replica line shows when the second copy was started; it only began serving at the second marker. The second GPU machine was already running, so the wait is pulling the image and loading the model, not starting a machine.`);
     const minutes = (s) => s / 60;
     charts.push(new Chart(document.getElementById("scale-chart"), {
@@ -197,7 +197,7 @@
             type: "linear",
             min: 0,
             max: minutes(a.queue.at(-1)[0]),
-            title: { display: true, text: "Minutes into the run" },
+            title: { display: true, text: "Minutes since monitoring started" },
             grid: { display: false },
           },
           y: { title: { display: true, text: "Requests waiting" }, beginAtZero: true, grid: { color: grid }, border: { display: false, dash: [3, 4] } },

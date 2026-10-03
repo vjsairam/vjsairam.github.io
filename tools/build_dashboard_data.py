@@ -81,6 +81,9 @@ def main() -> int:
     trigger = epoch((op / "scaledobject-trigger-time.txt").read_text())
     ready = epoch((op / "pod-ready-time.txt").read_text())
     t5 = load(t5_dir)
+    lead = re.search(r"about (\d+) seconds\s+after the first measured request", (t5_dir / "README.md").read_text())
+    if not lead:
+        raise SystemExit("t5 README no longer states the delay after the first measured request")
 
     data = {
         "source": REPO_URL,
@@ -103,6 +106,7 @@ def main() -> int:
         "autoscale": {
             "start": start,
             "trigger_s": trigger - start,
+            "trigger_after_first_request_s": int(lead.group(1)),
             "ready_s": ready - start,
             "cold_start_s": ready - trigger,
             "requests": int(t5["sample_size"]),

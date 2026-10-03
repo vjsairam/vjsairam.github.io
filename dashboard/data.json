@@ -93,6 +93,7 @@
  "autoscale": {
   "start": 1787494414,
   "trigger_s": 17,
+  "trigger_after_first_request_s": 10,
   "ready_s": 477,
   "cold_start_s": 460,
   "requests": 45000,

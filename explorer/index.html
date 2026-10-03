@@ -15,7 +15,8 @@
   <h1>AI inference cost explorer</h1>
   <p class="lede">Should you call a hosted model API, run an open model on your own GPU, or mix the two?
   Pick your situation below. The numbers come from a benchmark I ran on AWS in August 2026: same
-  tasks, same scoring, real bills.</p>
+  tasks and scoring for every option, with costs calculated from the measured runs at published
+  cloud prices.</p>
 
   <form id="controls" class="controls" aria-label="Your situation">
     <fieldset>
@@ -93,8 +94,9 @@
 
   <h2>What was measured</h2>
   <p>Each option answered the same 300 test items three times (900 requests), scored by the same
-  strict rules. Response times are what a user would wait. Costs here are what those 900 requests
-  actually cost, so they differ a little from the modelled monthly figures above.</p>
+  strict rules. Response times are what a user would wait. Costs in this table are for the benchmark
+  runs themselves, with the GPU billed only for the minutes it ran. The monthly figures above
+  assume a GPU kept running all month, which is why the own-GPU numbers differ so much.</p>
   <div class="table-wrap">
     <table id="measured">
       <thead><tr><th>Task</th><th>Option</th><th>Correct</th><th class="num">Per 1,000 correct</th><th class="num">Typical wait</th><th class="num">Slowest 5%</th></tr></thead>

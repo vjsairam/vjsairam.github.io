@@ -70,10 +70,12 @@
       <p class="source"><a id="drill-pod-link">Evidence</a></p>
     </section>
     <section class="panel">
-      <h2>Failure drill: hosted provider failing</h2>
+      <h2>Failure drill: hosted provider failing (simulated)</h2>
       <h3 id="drill-fault"></h3>
-      <p class="note">For the whole run every third call to the hosted provider returned a rate limit, a
-      server error or a 35 second timeout. The router sent each failed call to the GPU instead, and
+      <p class="note">For the whole run the hosted route was pointed at a fault simulator that failed every
+      third call with a rate limit, a server error or a 35 second timeout. Its other answers were
+      canned, so this run says nothing about the hosted model's accuracy. The router sent each failed
+      call to the GPU instead, and
       no user got an error. The cost showed up as waiting: calls that hit the timeout took about 30
       seconds before switching over.</p>
       <p class="source"><a id="drill-fault-link">Evidence</a></p>
