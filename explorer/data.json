@@ -1,0 +1,1312 @@
+{
+ "source": "https://github.com/vjsairam/ai-inference-cost-optimization",
+ "measured": "2026-08-17",
+ "prices": {
+  "effective_date": "2026-08-17",
+  "gpu": "NVIDIA L4 (AWS g6.xlarge, on demand, us-east-1)",
+  "gpu_hourly_usd": 0.8048,
+  "managed_per_1m_tokens_usd": 9.0
+ },
+ "sizes": {
+  "short": {
+   "input_tokens": 256,
+   "output_tokens": 64
+  },
+  "medium": {
+   "input_tokens": 1024,
+   "output_tokens": 256
+  }
+ },
+ "utilization": {
+  "low": 100000,
+  "typical": 500000,
+  "high": 1000000
+ },
+ "operations": {
+  "low": {
+   "hours": 2.0,
+   "rate": 80.0,
+   "share": 0.25,
+   "basis": "Single operator, stable stack, quarterly upkeep amortized; a quarter attributed to inference serving."
+  },
+  "typical": {
+   "hours": 6.0,
+   "rate": 120.0,
+   "share": 0.5,
+   "basis": "One DevOps engineer at a fully loaded internal rate; half of platform time attributed to inference serving."
+  },
+  "high": {
+   "hours": 16.0,
+   "rate": 180.0,
+   "share": 1.0,
+   "basis": "External contractor rate during active iteration; all platform time attributed to inference serving."
+  }
+ },
+ "runs": [
+  {
+   "id": "20260817T153645Z-cbe2c957-t1-private-baseline",
+   "treatment": "t1",
+   "workload": "classification",
+   "requests": 900,
+   "quality": 0.9433333333333334,
+   "cost_per_correct": 5.049469964664311e-05,
+   "latency_p50_ms": 79,
+   "latency_p95_ms": 150,
+   "routing_mix": null,
+   "url": "https://github.com/vjsairam/ai-inference-cost-optimization/tree/main/results/published/20260817T153645Z-cbe2c957-t1-private-baseline"
+  },
+  {
+   "id": "20260817T153715Z-cbe2c957-t1-private-baseline",
+   "treatment": "t1",
+   "workload": "structured-extraction",
+   "requests": 900,
+   "quality": 0.4066666666666667,
+   "cost_per_correct": 0.00020517730951775956,
+   "latency_p50_ms": 1387,
+   "latency_p95_ms": 1522,
+   "routing_mix": null,
+   "url": "https://github.com/vjsairam/ai-inference-cost-optimization/tree/main/results/published/20260817T153715Z-cbe2c957-t1-private-baseline"
+  },
+  {
+   "id": "20260817T154919Z-cbe2c957-t0-managed-baseline",
+   "treatment": "t0",
+   "workload": "classification",
+   "requests": 900,
+   "quality": 0.7777777777777778,
+   "cost_per_correct": 0.002143642857142857,
+   "latency_p50_ms": 2711,
+   "latency_p95_ms": 3661,
+   "routing_mix": null,
+   "url": "https://github.com/vjsairam/ai-inference-cost-optimization/tree/main/results/published/20260817T154919Z-cbe2c957-t0-managed-baseline"
+  },
+  {
+   "id": "20260817T160103Z-cbe2c957-t0-managed-baseline",
+   "treatment": "t0",
+   "workload": "structured-extraction",
+   "requests": 900,
+   "quality": 0.9988888888888889,
+   "cost_per_correct": 0.004107986651835372,
+   "latency_p50_ms": 3387,
+   "latency_p95_ms": 4682,
+   "routing_mix": null,
+   "url": "https://github.com/vjsairam/ai-inference-cost-optimization/tree/main/results/published/20260817T160103Z-cbe2c957-t0-managed-baseline"
+  },
+  {
+   "id": "20260817T161636Z-cbe2c957-t3-hybrid",
+   "treatment": "t3",
+   "workload": "classification",
+   "requests": 900,
+   "quality": 0.8888888888888888,
+   "cost_per_correct": 0.0007098255860129167,
+   "latency_p50_ms": 59,
+   "latency_p95_ms": 3337,
+   "routing_mix": {
+    "managed-premium": 298,
+    "private-vllm": 602
+   },
+   "url": "https://github.com/vjsairam/ai-inference-cost-optimization/tree/main/results/published/20260817T161636Z-cbe2c957-t3-hybrid"
+  }
+ ],
+ "grid": [
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "medium",
+   "util": "high",
+   "volume": 10000,
+   "managed": 115.2,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "medium",
+   "util": "high",
+   "volume": 50000,
+   "managed": 576.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "medium",
+   "util": "high",
+   "volume": 100000,
+   "managed": 1152.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "medium",
+   "util": "high",
+   "volume": 500000,
+   "managed": 5760.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "medium",
+   "util": "high",
+   "volume": 1000000,
+   "managed": 11520.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "medium",
+   "util": "low",
+   "volume": 10000,
+   "managed": 115.2,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "medium",
+   "util": "low",
+   "volume": 50000,
+   "managed": 576.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "medium",
+   "util": "low",
+   "volume": 100000,
+   "managed": 1152.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "medium",
+   "util": "low",
+   "volume": 500000,
+   "managed": 5760.0,
+   "private": 2897.28,
+   "replicas": 5
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "medium",
+   "util": "low",
+   "volume": 1000000,
+   "managed": 11520.0,
+   "private": 5794.56,
+   "replicas": 10
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "medium",
+   "util": "typical",
+   "volume": 10000,
+   "managed": 115.2,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "medium",
+   "util": "typical",
+   "volume": 50000,
+   "managed": 576.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "medium",
+   "util": "typical",
+   "volume": 100000,
+   "managed": 1152.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "medium",
+   "util": "typical",
+   "volume": 500000,
+   "managed": 5760.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "medium",
+   "util": "typical",
+   "volume": 1000000,
+   "managed": 11520.0,
+   "private": 1158.91,
+   "replicas": 2
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "short",
+   "util": "high",
+   "volume": 10000,
+   "managed": 28.8,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "short",
+   "util": "high",
+   "volume": 50000,
+   "managed": 144.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "short",
+   "util": "high",
+   "volume": 100000,
+   "managed": 288.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "short",
+   "util": "high",
+   "volume": 500000,
+   "managed": 1440.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "short",
+   "util": "high",
+   "volume": 1000000,
+   "managed": 2880.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "short",
+   "util": "low",
+   "volume": 10000,
+   "managed": 28.8,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "short",
+   "util": "low",
+   "volume": 50000,
+   "managed": 144.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "short",
+   "util": "low",
+   "volume": 100000,
+   "managed": 288.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "short",
+   "util": "low",
+   "volume": 500000,
+   "managed": 1440.0,
+   "private": 2897.28,
+   "replicas": 5
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "short",
+   "util": "low",
+   "volume": 1000000,
+   "managed": 2880.0,
+   "private": 5794.56,
+   "replicas": 10
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "short",
+   "util": "typical",
+   "volume": 10000,
+   "managed": 28.8,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "short",
+   "util": "typical",
+   "volume": 50000,
+   "managed": 144.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "short",
+   "util": "typical",
+   "volume": 100000,
+   "managed": 288.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "short",
+   "util": "typical",
+   "volume": 500000,
+   "managed": 1440.0,
+   "private": 579.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_a",
+   "ops": "not_applicable",
+   "size": "short",
+   "util": "typical",
+   "volume": 1000000,
+   "managed": 2880.0,
+   "private": 1158.91,
+   "replicas": 2
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "medium",
+   "util": "high",
+   "volume": 10000,
+   "managed": 3122.21,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "medium",
+   "util": "high",
+   "volume": 50000,
+   "managed": 3583.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "medium",
+   "util": "high",
+   "volume": 100000,
+   "managed": 4159.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "medium",
+   "util": "high",
+   "volume": 500000,
+   "managed": 8767.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "medium",
+   "util": "high",
+   "volume": 1000000,
+   "managed": 14527.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "medium",
+   "util": "low",
+   "volume": 10000,
+   "managed": 3122.21,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "medium",
+   "util": "low",
+   "volume": 50000,
+   "managed": 3583.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "medium",
+   "util": "low",
+   "volume": 100000,
+   "managed": 4159.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "medium",
+   "util": "low",
+   "volume": 500000,
+   "managed": 8767.01,
+   "private": 5904.29,
+   "replicas": 5
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "medium",
+   "util": "low",
+   "volume": 1000000,
+   "managed": 14527.01,
+   "private": 8801.57,
+   "replicas": 10
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "medium",
+   "util": "typical",
+   "volume": 10000,
+   "managed": 3122.21,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "medium",
+   "util": "typical",
+   "volume": 50000,
+   "managed": 3583.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "medium",
+   "util": "typical",
+   "volume": 100000,
+   "managed": 4159.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "medium",
+   "util": "typical",
+   "volume": 500000,
+   "managed": 8767.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "medium",
+   "util": "typical",
+   "volume": 1000000,
+   "managed": 14527.01,
+   "private": 4165.92,
+   "replicas": 2
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "short",
+   "util": "high",
+   "volume": 10000,
+   "managed": 3035.81,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "short",
+   "util": "high",
+   "volume": 50000,
+   "managed": 3151.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "short",
+   "util": "high",
+   "volume": 100000,
+   "managed": 3295.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "short",
+   "util": "high",
+   "volume": 500000,
+   "managed": 4447.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "short",
+   "util": "high",
+   "volume": 1000000,
+   "managed": 5887.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "short",
+   "util": "low",
+   "volume": 10000,
+   "managed": 3035.81,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "short",
+   "util": "low",
+   "volume": 50000,
+   "managed": 3151.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "short",
+   "util": "low",
+   "volume": 100000,
+   "managed": 3295.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "short",
+   "util": "low",
+   "volume": 500000,
+   "managed": 4447.01,
+   "private": 5904.29,
+   "replicas": 5
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "short",
+   "util": "low",
+   "volume": 1000000,
+   "managed": 5887.01,
+   "private": 8801.57,
+   "replicas": 10
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "short",
+   "util": "typical",
+   "volume": 10000,
+   "managed": 3035.81,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "short",
+   "util": "typical",
+   "volume": 50000,
+   "managed": 3151.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "short",
+   "util": "typical",
+   "volume": 100000,
+   "managed": 3295.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "short",
+   "util": "typical",
+   "volume": 500000,
+   "managed": 4447.01,
+   "private": 3586.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "high",
+   "size": "short",
+   "util": "typical",
+   "volume": 1000000,
+   "managed": 5887.01,
+   "private": 4165.92,
+   "replicas": 2
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "medium",
+   "util": "high",
+   "volume": 10000,
+   "managed": 282.21,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "medium",
+   "util": "high",
+   "volume": 50000,
+   "managed": 743.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "medium",
+   "util": "high",
+   "volume": 100000,
+   "managed": 1319.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "medium",
+   "util": "high",
+   "volume": 500000,
+   "managed": 5927.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "medium",
+   "util": "high",
+   "volume": 1000000,
+   "managed": 11687.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "medium",
+   "util": "low",
+   "volume": 10000,
+   "managed": 282.21,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "medium",
+   "util": "low",
+   "volume": 50000,
+   "managed": 743.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "medium",
+   "util": "low",
+   "volume": 100000,
+   "managed": 1319.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "medium",
+   "util": "low",
+   "volume": 500000,
+   "managed": 5927.01,
+   "private": 3064.29,
+   "replicas": 5
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "medium",
+   "util": "low",
+   "volume": 1000000,
+   "managed": 11687.01,
+   "private": 5961.57,
+   "replicas": 10
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "medium",
+   "util": "typical",
+   "volume": 10000,
+   "managed": 282.21,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "medium",
+   "util": "typical",
+   "volume": 50000,
+   "managed": 743.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "medium",
+   "util": "typical",
+   "volume": 100000,
+   "managed": 1319.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "medium",
+   "util": "typical",
+   "volume": 500000,
+   "managed": 5927.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "medium",
+   "util": "typical",
+   "volume": 1000000,
+   "managed": 11687.01,
+   "private": 1325.92,
+   "replicas": 2
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "short",
+   "util": "high",
+   "volume": 10000,
+   "managed": 195.81,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "short",
+   "util": "high",
+   "volume": 50000,
+   "managed": 311.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "short",
+   "util": "high",
+   "volume": 100000,
+   "managed": 455.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "short",
+   "util": "high",
+   "volume": 500000,
+   "managed": 1607.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "short",
+   "util": "high",
+   "volume": 1000000,
+   "managed": 3047.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "short",
+   "util": "low",
+   "volume": 10000,
+   "managed": 195.81,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "short",
+   "util": "low",
+   "volume": 50000,
+   "managed": 311.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "short",
+   "util": "low",
+   "volume": 100000,
+   "managed": 455.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "short",
+   "util": "low",
+   "volume": 500000,
+   "managed": 1607.01,
+   "private": 3064.29,
+   "replicas": 5
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "short",
+   "util": "low",
+   "volume": 1000000,
+   "managed": 3047.01,
+   "private": 5961.57,
+   "replicas": 10
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "short",
+   "util": "typical",
+   "volume": 10000,
+   "managed": 195.81,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "short",
+   "util": "typical",
+   "volume": 50000,
+   "managed": 311.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "short",
+   "util": "typical",
+   "volume": 100000,
+   "managed": 455.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "short",
+   "util": "typical",
+   "volume": 500000,
+   "managed": 1607.01,
+   "private": 746.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "low",
+   "size": "short",
+   "util": "typical",
+   "volume": 1000000,
+   "managed": 3047.01,
+   "private": 1325.92,
+   "replicas": 2
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "medium",
+   "util": "high",
+   "volume": 10000,
+   "managed": 602.21,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "medium",
+   "util": "high",
+   "volume": 50000,
+   "managed": 1063.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "medium",
+   "util": "high",
+   "volume": 100000,
+   "managed": 1639.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "medium",
+   "util": "high",
+   "volume": 500000,
+   "managed": 6247.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "medium",
+   "util": "high",
+   "volume": 1000000,
+   "managed": 12007.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "medium",
+   "util": "low",
+   "volume": 10000,
+   "managed": 602.21,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "medium",
+   "util": "low",
+   "volume": 50000,
+   "managed": 1063.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "medium",
+   "util": "low",
+   "volume": 100000,
+   "managed": 1639.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "medium",
+   "util": "low",
+   "volume": 500000,
+   "managed": 6247.01,
+   "private": 3384.29,
+   "replicas": 5
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "medium",
+   "util": "low",
+   "volume": 1000000,
+   "managed": 12007.01,
+   "private": 6281.57,
+   "replicas": 10
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "medium",
+   "util": "typical",
+   "volume": 10000,
+   "managed": 602.21,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "medium",
+   "util": "typical",
+   "volume": 50000,
+   "managed": 1063.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "medium",
+   "util": "typical",
+   "volume": 100000,
+   "managed": 1639.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "medium",
+   "util": "typical",
+   "volume": 500000,
+   "managed": 6247.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "medium",
+   "util": "typical",
+   "volume": 1000000,
+   "managed": 12007.01,
+   "private": 1645.92,
+   "replicas": 2
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "short",
+   "util": "high",
+   "volume": 10000,
+   "managed": 515.81,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "short",
+   "util": "high",
+   "volume": 50000,
+   "managed": 631.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "short",
+   "util": "high",
+   "volume": 100000,
+   "managed": 775.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "short",
+   "util": "high",
+   "volume": 500000,
+   "managed": 1927.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "short",
+   "util": "high",
+   "volume": 1000000,
+   "managed": 3367.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "short",
+   "util": "low",
+   "volume": 10000,
+   "managed": 515.81,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "short",
+   "util": "low",
+   "volume": 50000,
+   "managed": 631.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "short",
+   "util": "low",
+   "volume": 100000,
+   "managed": 775.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "short",
+   "util": "low",
+   "volume": 500000,
+   "managed": 1927.01,
+   "private": 3384.29,
+   "replicas": 5
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "short",
+   "util": "low",
+   "volume": 1000000,
+   "managed": 3367.01,
+   "private": 6281.57,
+   "replicas": 10
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "short",
+   "util": "typical",
+   "volume": 10000,
+   "managed": 515.81,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "short",
+   "util": "typical",
+   "volume": 50000,
+   "managed": 631.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "short",
+   "util": "typical",
+   "volume": 100000,
+   "managed": 775.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "short",
+   "util": "typical",
+   "volume": 500000,
+   "managed": 1927.01,
+   "private": 1066.46,
+   "replicas": 1
+  },
+  {
+   "view": "view_b",
+   "ops": "typical",
+   "size": "short",
+   "util": "typical",
+   "volume": 1000000,
+   "managed": 3367.01,
+   "private": 1645.92,
+   "replicas": 2
+  }
+ ]
+}

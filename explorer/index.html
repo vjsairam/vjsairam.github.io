@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI inference cost explorer | Sai Ram</title>
+<meta name="description" content="Hosted model API, your own GPU, or a mix: monthly cost and cost per correct answer from a measured benchmark on AWS, August 2026.">
+<link rel="stylesheet" href="../assets/site.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.1/chart.umd.min.js" integrity="sha512-WoViKhKD4qI2WruSZqv9+kvM4WfFhUMQCLN4QlDTt5aU56fLQy2gYoxWIqlEnXqJy/+Ac5q/hk1oWfqnMDhwMA==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+<script src="explorer.js" defer></script>
+</head>
+<body>
+<main class="wide">
+  <p class="crumb"><a href="../">Sai Ram</a></p>
+  <h1>AI inference cost explorer</h1>
+  <p class="lede">Should you call a hosted model API, run an open model on your own GPU, or mix the two?
+  Pick your situation below. The numbers come from a benchmark I ran on AWS in August 2026: same
+  tasks, same scoring, real bills.</p>
+
+  <form id="controls" class="controls" aria-label="Your situation">
+    <fieldset>
+      <legend>What the model does</legend>
+      <div class="tabs">
+        <label><input type="radio" name="task" value="classification" checked>Sort messages into categories</label>
+        <label><input type="radio" name="task" value="structured-extraction">Pull fields out of documents</label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Requests a month: <output id="volume-out">100,000</output></legend>
+      <input type="range" id="volume" name="volume" min="0" max="4" step="1" value="2" aria-describedby="volume-scale">
+      <div id="volume-scale" class="scale"><span>10k</span><span>50k</span><span>100k</span><span>500k</span><span>1M</span></div>
+    </fieldset>
+
+    <div class="row">
+      <fieldset>
+        <legend>Size of each request</legend>
+        <select name="size">
+          <option value="short">Short: a paragraph in, a sentence out</option>
+          <option value="medium">Medium: a page in, a paragraph out</option>
+        </select>
+      </fieldset>
+      <fieldset>
+        <legend>How busy each GPU is kept</legend>
+        <select name="util">
+          <option value="low">Low: 100k requests per GPU a month</option>
+          <option value="typical" selected>Typical: 500k per GPU a month</option>
+          <option value="high">High: 1M per GPU a month</option>
+        </select>
+      </fieldset>
+      <fieldset>
+        <legend>Costs to count</legend>
+        <select name="costs">
+          <option value="a">Model and GPU only</option>
+          <option value="low">Everything, light ops effort</option>
+          <option value="typical">Everything, typical ops effort</option>
+          <option value="high">Everything, heavy ops effort</option>
+        </select>
+      </fieldset>
+    </div>
+
+    <label class="check"><input type="checkbox" name="private"> Our data can't leave our own environment</label>
+  </form>
+
+  <section aria-live="polite">
+    <p id="verdict" class="verdict"></p>
+    <div class="versus">
+      <div class="side hosted" id="tile-managed">
+        <h3><span class="swatch" style="background:var(--hosted)"></span>Hosted model API</h3>
+        <p class="big" data-k="monthly"></p>
+        <dl>
+          <dt>Got right on this task</dt><dd data-k="quality"></dd>
+          <dt>Per 1,000 correct answers</dt><dd data-k="per"></dd>
+        </dl>
+      </div>
+      <div class="side own" id="tile-private">
+        <h3><span class="swatch" style="background:var(--own)"></span>Open 7B model on your own GPU</h3>
+        <p class="big" data-k="monthly"></p>
+        <dl>
+          <dt>Got right on this task</dt><dd data-k="quality"></dd>
+          <dt>Per 1,000 correct answers</dt><dd data-k="per"></dd>
+        </dl>
+      </div>
+    </div>
+
+    <h2>Monthly cost as volume grows</h2>
+    <div class="chart"><canvas id="cost-chart" role="img" aria-label="Monthly cost of the hosted API and your own GPU from 10,000 to 1,000,000 requests a month"></canvas></div>
+    <p class="source">Source: published runs of the <a href="https://github.com/vjsairam/ai-inference-cost-optimization">inference cost benchmark</a>, measured on AWS EKS, 17 August 2026. Monthly figures come from its break-even table; quality is what each option scored on this task.</p>
+    <p class="note" id="crossover"></p>
+
+    <p><button type="button" id="share" class="button secondary">Copy a link to this scenario</button> <span id="share-status" class="note"></span></p>
+  </section>
+
+  <h2>What was measured</h2>
+  <p>Each option answered the same 300 test items three times (900 requests), scored by the same
+  strict rules. Response times are what a user would wait. Costs here are what those 900 requests
+  actually cost, so they differ a little from the modelled monthly figures above.</p>
+  <div class="table-wrap">
+    <table id="measured">
+      <thead><tr><th>Task</th><th>Option</th><th>Correct</th><th class="num">Per 1,000 correct</th><th class="num">Typical wait</th><th class="num">Slowest 5%</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="note" id="hybrid-note"></p>
+
+  <h2>How to read this</h2>
+  <ul class="plain">
+    <li>A hosted API charges for every request. Your own GPU costs the same whether it is busy or
+    idle. Volume decides which is cheaper, and how busy you keep each GPU moves the crossover.</li>
+    <li>Quality comes before price. On document extraction the 7B model got fewer than half of the
+    records right, so it is not an option there however cheap it looks.</li>
+    <li>These are one benchmark's prices: <span id="prices"></span>. Your models, prices and
+    traffic will differ, so treat this as a way of thinking about the decision, not a quote.</li>
+  </ul>
+
+  <div class="cta">
+    <p><strong>Want this worked out with your own traffic and prices?</strong> I run a fixed
+    two-week assessment that measures your workload the same way and ends with a written
+    recommendation, including "change nothing" when that is the right answer.</p>
+    <p><a class="button" href="mailto:sai@vjsairam.com?subject=Inference%20cost%20assessment">Email sai@vjsairam.com</a>
+    <a href="https://github.com/vjsairam/ai-inference-cost-optimization">Read the full method and evidence</a></p>
+  </div>
+
+  <footer class="contact">
+    <a href="../">Home</a>
+    <a href="../dashboard/">Sample results dashboard</a>
+    <a href="https://github.com/vjsairam">GitHub</a>
+  </footer>
+</main>
+</body>
+</html>

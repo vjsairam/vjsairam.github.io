@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sample results dashboard | Sai Ram</title>
+<meta name="description" content="What a client sees after an AI inference assessment: cost, quality, routing, service targets, failure drills and autoscaling, built from measured benchmark runs.">
+<link rel="stylesheet" href="../assets/site.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.1/chart.umd.min.js" integrity="sha512-WoViKhKD4qI2WruSZqv9+kvM4WfFhUMQCLN4QlDTt5aU56fLQy2gYoxWIqlEnXqJy/+Ac5q/hk1oWfqnMDhwMA==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+<script src="dashboard.js" defer></script>
+</head>
+<body>
+<main class="wide">
+  <p class="crumb"><a href="../">Sai Ram</a></p>
+  <h1>Sample results dashboard</h1>
+  <p class="lede">What a client sees at the end of an assessment: what the AI traffic costs, how often it
+  is right, where each request went, which service targets held, and how the system behaved when
+  things broke or load spiked.</p>
+  <p class="banner">Sample data from my own benchmark runs on AWS in August 2026, not a client's.
+  The traffic is 900 classification requests, split evenly across public, internal and restricted
+  data and three service levels.</p>
+
+  <div class="kpis">
+    <div class="kpi"><div class="label">Per 1,000 correct answers</div><div class="value" id="k-cost"></div><div class="sub" id="k-cost-sub"></div></div>
+    <div class="kpi"><div class="label">Answered correctly</div><div class="value" id="k-quality"></div><div class="sub" id="k-quality-sub"></div></div>
+    <div class="kpi"><div class="label">Kept on your own GPU</div><div class="value" id="k-private"></div><div class="sub" id="k-private-sub"></div></div>
+    <div class="kpi"><div class="label">Typical response</div><div class="value" id="k-latency"></div><div class="sub" id="k-latency-sub"></div></div>
+  </div>
+
+  <div class="grid2">
+    <section class="panel">
+      <h2>Where requests went</h2>
+      <h3 id="routing-title"></h3>
+      <div class="chart" style="height:150px"><canvas id="routing-chart" role="img" aria-label="Requests served by your own GPU and by the hosted API"></canvas></div>
+      <p class="note" id="routing-note"></p>
+    </section>
+    <section class="panel">
+      <h2>What a correct answer costs</h2>
+      <h3>The mix sits between the two extremes</h3>
+      <div class="chart" style="height:150px"><canvas id="cost-chart" role="img" aria-label="Cost per 1,000 correct answers: hosted only, the mix, and own GPU only"></canvas></div>
+      <p class="note">Hosted only and own GPU only are the same task run entirely on one option.</p>
+    </section>
+  </div>
+
+  <section>
+    <h2>Service targets by traffic class</h2>
+    <div class="table-wrap">
+      <table id="slo">
+        <thead><tr><th>Service level</th><th class="num">Correct</th><th class="num">Target</th><th class="num">First response, slowest 5%</th><th class="num">Target</th><th class="num">Errors</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="note" id="slo-note"></p>
+  </section>
+
+  <section class="panel">
+    <h2>Scaling under load</h2>
+    <h3 id="scale-title"></h3>
+    <div class="chart" style="height:280px"><canvas id="scale-chart" role="img" aria-label="Waiting requests and GPU replicas over ten minutes of sustained load"></canvas></div>
+    <p class="source" id="scale-note"></p>
+  </section>
+
+  <div class="grid2">
+    <section class="panel">
+      <h2>Failure drill: GPU server killed</h2>
+      <h3 id="drill-pod"></h3>
+      <p class="note">The model server was deleted mid-traffic with no warning. Requests that had to stay
+      private failed during the outage instead of being sent to the hosted API. That is the designed
+      trade-off: an outage, not a data leak.</p>
+      <p class="source"><a id="drill-pod-link">Evidence</a></p>
+    </section>
+    <section class="panel">
+      <h2>Failure drill: hosted provider failing</h2>
+      <h3 id="drill-fault"></h3>
+      <p class="note">For the whole run every third call to the hosted provider returned a rate limit, a
+      server error or a 35 second timeout. The router sent each failed call to the GPU instead, and
+      no user got an error. The cost showed up as waiting: calls that hit the timeout took about 30
+      seconds before switching over.</p>
+      <p class="source"><a id="drill-fault-link">Evidence</a></p>
+    </section>
+  </div>
+
+  <div class="cta">
+    <p><strong>Want this for your own system?</strong> A two-week assessment measures your workload and
+    leaves you this dashboard, the evidence behind every number, and a written recommendation.</p>
+    <p><a class="button" href="mailto:sai@vjsairam.com?subject=Inference%20cost%20assessment">Email sai@vjsairam.com</a>
+    <a href="../explorer/">Try the cost explorer</a></p>
+  </div>
+
+  <footer class="contact">
+    <a href="../">Home</a>
+    <a href="../explorer/">Cost explorer</a>
+    <a href="https://github.com/vjsairam/ai-inference-cost-optimization">Benchmark and method</a>
+  </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,426 @@
+{
+ "source": "https://github.com/vjsairam/ai-inference-cost-optimization",
+ "mix": {
+  "requests": 900,
+  "quality": 0.8888888888888888,
+  "cost_per_k": 0.7098255860129167,
+  "hosted_only_per_k": 2.143642857142857,
+  "own_only_per_k": 0.05049469964664311,
+  "own_gpu": 602,
+  "hosted": 298,
+  "data_classes": {
+   "internal": 300,
+   "public": 300,
+   "restricted": 300
+  },
+  "fallbacks": 2,
+  "latency_p50_ms": 59,
+  "latency_p95_ms": 3337,
+  "cells": [
+   {
+    "name": "balanced",
+    "eligible": true,
+    "quality": [
+     0.94,
+     0.9,
+     true
+    ],
+    "first_token_p95_ms": [
+     43,
+     1500,
+     true
+    ],
+    "error_rate": [
+     0.0,
+     0.01,
+     true
+    ]
+   },
+   {
+    "name": "economy",
+    "eligible": true,
+    "quality": [
+     0.95,
+     0.85,
+     true
+    ],
+    "first_token_p95_ms": [
+     52,
+     1500,
+     true
+    ],
+    "error_rate": [
+     0.0,
+     0.02,
+     true
+    ]
+   },
+   {
+    "name": "premium",
+    "eligible": false,
+    "quality": [
+     0.7766666666666666,
+     0.95,
+     false
+    ],
+    "first_token_p95_ms": [
+     3817,
+     2000,
+     false
+    ],
+    "error_rate": [
+     0.0,
+     0.01,
+     true
+    ]
+   }
+  ],
+  "url": "https://github.com/vjsairam/ai-inference-cost-optimization/tree/main/results/published/20260817T161636Z-cbe2c957-t3-hybrid"
+ },
+ "drills": {
+  "pod_delete": {
+   "outage_s": 165,
+   "requests": 900,
+   "url": "https://github.com/vjsairam/ai-inference-cost-optimization/tree/main/results/published/20260817T164733Z-cbe2c957-t4-failure"
+  },
+  "provider_fault": {
+   "failed_over": 150,
+   "client_errors": 0,
+   "requests": 900,
+   "url": "https://github.com/vjsairam/ai-inference-cost-optimization/tree/main/results/published/20260819T035813Z-7d2a2394-t4-failure"
+  }
+ },
+ "autoscale": {
+  "start": 1787494414,
+  "trigger_s": 17,
+  "ready_s": 477,
+  "cold_start_s": 460,
+  "requests": 45000,
+  "requests_per_second": 88.5,
+  "queue": [
+   [
+    0,
+    0.0
+   ],
+   [
+    15,
+    12.0
+   ],
+   [
+    30,
+    0.0
+   ],
+   [
+    45,
+    0.0
+   ],
+   [
+    60,
+    0.0
+   ],
+   [
+    75,
+    0.0
+   ],
+   [
+    90,
+    0.0
+   ],
+   [
+    105,
+    0.0
+   ],
+   [
+    120,
+    0.0
+   ],
+   [
+    135,
+    0.0
+   ],
+   [
+    150,
+    0.0
+   ],
+   [
+    165,
+    8.0
+   ],
+   [
+    180,
+    0.0
+   ],
+   [
+    195,
+    0.0
+   ],
+   [
+    210,
+    0.0
+   ],
+   [
+    225,
+    0.0
+   ],
+   [
+    240,
+    0.0
+   ],
+   [
+    255,
+    0.0
+   ],
+   [
+    270,
+    0.0
+   ],
+   [
+    285,
+    0.0
+   ],
+   [
+    300,
+    0.0
+   ],
+   [
+    315,
+    0.0
+   ],
+   [
+    330,
+    0.0
+   ],
+   [
+    345,
+    0.0
+   ],
+   [
+    360,
+    0.0
+   ],
+   [
+    375,
+    0.0
+   ],
+   [
+    390,
+    0.0
+   ],
+   [
+    405,
+    0.0
+   ],
+   [
+    420,
+    0.0
+   ],
+   [
+    435,
+    0.0
+   ],
+   [
+    450,
+    0.0
+   ],
+   [
+    465,
+    0.0
+   ],
+   [
+    480,
+    11.0
+   ],
+   [
+    495,
+    0.0
+   ],
+   [
+    510,
+    0.0
+   ],
+   [
+    525,
+    0.0
+   ],
+   [
+    540,
+    0.0
+   ],
+   [
+    555,
+    0.0
+   ],
+   [
+    570,
+    0.0
+   ],
+   [
+    585,
+    0.0
+   ]
+  ],
+  "replicas": [
+   [
+    0,
+    1.0
+   ],
+   [
+    15,
+    1.0
+   ],
+   [
+    30,
+    2.0
+   ],
+   [
+    45,
+    2.0
+   ],
+   [
+    60,
+    2.0
+   ],
+   [
+    75,
+    2.0
+   ],
+   [
+    90,
+    2.0
+   ],
+   [
+    105,
+    2.0
+   ],
+   [
+    120,
+    2.0
+   ],
+   [
+    135,
+    2.0
+   ],
+   [
+    150,
+    2.0
+   ],
+   [
+    165,
+    2.0
+   ],
+   [
+    180,
+    2.0
+   ],
+   [
+    195,
+    2.0
+   ],
+   [
+    210,
+    2.0
+   ],
+   [
+    225,
+    2.0
+   ],
+   [
+    240,
+    2.0
+   ],
+   [
+    255,
+    2.0
+   ],
+   [
+    270,
+    2.0
+   ],
+   [
+    285,
+    2.0
+   ],
+   [
+    300,
+    2.0
+   ],
+   [
+    315,
+    2.0
+   ],
+   [
+    330,
+    2.0
+   ],
+   [
+    345,
+    2.0
+   ],
+   [
+    360,
+    2.0
+   ],
+   [
+    375,
+    2.0
+   ],
+   [
+    390,
+    2.0
+   ],
+   [
+    405,
+    2.0
+   ],
+   [
+    420,
+    2.0
+   ],
+   [
+    435,
+    2.0
+   ],
+   [
+    450,
+    2.0
+   ],
+   [
+    465,
+    2.0
+   ],
+   [
+    480,
+    2.0
+   ],
+   [
+    495,
+    2.0
+   ],
+   [
+    510,
+    2.0
+   ],
+   [
+    525,
+    2.0
+   ],
+   [
+    540,
+    2.0
+   ],
+   [
+    555,
+    2.0
+   ],
+   [
+    570,
+    2.0
+   ],
+   [
+    585,
+    2.0
+   ]
+  ],
+  "url": "https://github.com/vjsairam/ai-inference-cost-optimization/tree/main/results/published/20260823T141339Z-8d3374c4-t5-autoscale"
+ }
+}
