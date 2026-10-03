@@ -1,0 +1,63 @@
+name: Site checks
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  schedule:
+    # Weekly: fails if the benchmark has published results the site does not show yet.
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  data:
+    name: Data matches the published benchmark
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: vjsairam/ai-inference-cost-optimization
+          path: benchmark
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml==6.0.2
+      - name: Rebuild the data files
+        run: |
+          python tools/build_explorer_data.py benchmark
+          python tools/build_dashboard_data.py benchmark
+      - name: Fail if the committed data is stale
+        run: |
+          if ! git diff --exit-code -- explorer/data.json dashboard/data.json; then
+            echo "::error::Benchmark results changed. Rerun the builders in tools/ and commit the data files."
+            exit 1
+          fi
+      - run: python tests/check_site.py
+
+  browser:
+    name: Pages render in Chromium
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - run: |
+          pip install playwright==1.58.0
+          python -m playwright install --with-deps chromium
+      - name: Serve the site and check every page
+        run: |
+          python -m http.server 8765 --bind 127.0.0.1 &
+          sleep 1
+          python tests/browser_check.py http://127.0.0.1:8765
