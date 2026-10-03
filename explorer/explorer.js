@@ -98,7 +98,7 @@
       if (hosted.met_targets && !own.met_targets) {
         return `With data that can't leave your environment, an open model on your own GPU is the only option, and the 7B model I tested got just ${fmtPct(qp)} of these right. Measure another open model's accuracy and cost on your own documents before committing.`;
       }
-      return `With data that can't leave your environment, run the model yourself: about ${p} a month on ${onGpus} at ${fmtVolume(volume)} requests. It got ${fmtPct(qp)} right against ${fmtPct(qm)} for the hosted model, just under the benchmark's 95% target.`;
+      return `With data that can't leave your environment, running the model yourself is the way to meet that rule: about ${p} a month on ${onGpus} at ${fmtVolume(volume)} requests. The 7B model I tested got ${fmtPct(qp)} right, just short of the benchmark's 95% target, so check it against the accuracy you need before choosing it.`;
     }
     if (hosted.met_targets && !own.met_targets) {
       return `Use the hosted API for this task. It was the only option that met its targets, with ${fmtPct(qm)} correct against ${fmtPct(qp)} for the open 7B model. At ${fmtVolume(volume)} requests that's about ${m} a month.`;
