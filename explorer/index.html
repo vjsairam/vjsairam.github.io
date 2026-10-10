@@ -28,30 +28,30 @@
     </fieldset>
 
     <fieldset>
-      <legend>Requests a month: <output id="volume-out">100,000</output></legend>
-      <input type="range" id="volume" name="volume" min="0" max="4" step="1" value="2" aria-describedby="volume-scale">
+      <legend id="volume-label">Requests a month: <output id="volume-out">100,000</output></legend>
+      <input type="range" id="volume" name="volume" min="0" max="4" step="1" value="2" aria-labelledby="volume-label" aria-valuetext="100,000 requests a month" aria-describedby="volume-scale">
       <div id="volume-scale" class="scale"><span>10k</span><span>50k</span><span>100k</span><span>500k</span><span>1M</span></div>
     </fieldset>
 
     <div class="row">
       <fieldset>
-        <legend>Size of each request</legend>
-        <select name="size">
+        <legend id="size-label">Size of each request</legend>
+        <select name="size" aria-labelledby="size-label">
           <option value="short">Short: a paragraph in, a sentence out</option>
           <option value="medium">Medium: a page in, a paragraph out</option>
         </select>
       </fieldset>
       <fieldset>
-        <legend>How busy each GPU is kept</legend>
-        <select name="util">
+        <legend id="util-label">How busy each GPU is kept</legend>
+        <select name="util" aria-labelledby="util-label">
           <option value="low">Low: 100k requests per GPU a month</option>
           <option value="typical" selected>Typical: 500k per GPU a month</option>
           <option value="high">High: 1M per GPU a month</option>
         </select>
       </fieldset>
       <fieldset>
-        <legend>Costs to count</legend>
-        <select name="costs">
+        <legend id="costs-label">Costs to count</legend>
+        <select name="costs" aria-labelledby="costs-label">
           <option value="a">Model and GPU only</option>
           <option value="low">Everything, light ops effort</option>
           <option value="typical">Everything, typical ops effort</option>
