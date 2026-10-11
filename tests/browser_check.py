@@ -32,7 +32,7 @@ def main() -> int:
     failures = []
     with sync_playwright() as p:
         browser = p.chromium.launch()
-        for path in ("/", "/explorer/", "/dashboard/"):
+        for path in ("/", "/explorer/", "/dashboard/", "/notes/vllm-startup/"):
             page = browser.new_page(viewport={"width": 1280, "height": 900})
             errors = []
             page.on("pageerror", lambda e: errors.append(str(e)))
@@ -47,6 +47,11 @@ def main() -> int:
                 if drawn != 3:
                     failures.append(f"dashboard drew {drawn} of 3 charts")
                 print(f"dashboard: {drawn} charts drawn")
+            if path == "/notes/vllm-startup/":
+                segments = page.evaluate("() => document.querySelectorAll('#timeline .seg').length")
+                if segments != 2:
+                    failures.append(f"startup timeline drew {segments} of 2 segments")
+                print(f"startup note: {segments} timeline segments drawn")
             failures += [f"{path}: {e}" for e in errors]
             page.close()
         browser.close()
