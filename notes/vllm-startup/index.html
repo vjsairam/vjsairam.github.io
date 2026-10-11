@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where 7m 40s of vLLM startup went | Sai Ram</title>
+<meta name="description" content="A second vLLM replica took 7 minutes 40 seconds from scale-up to Ready on a GPU node that was already up. A timeline from the run's events and pod status, and how to check your own cluster.">
+<meta property="og:title" content="Where 7m 40s of vLLM startup went">
+<meta property="og:description" content="One vLLM scale-up, second by second, from the run's events and pod status, and how to check your own cluster.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://vjsairam.com/notes/vllm-startup/">
+<meta property="og:image" content="https://vjsairam.com/notes/vllm-startup/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="timeline.js" defer></script>
+</head>
+<body>
+<main>
+  <p class="crumb"><a href="../../">Sai Ram</a></p>
+  <h1>Where 7m 40s of vLLM startup went</h1>
+  <p class="lede">In my August autoscaling run, the HPA that KEDA manages asked for a second vLLM
+  replica about 10 seconds after the load started. The new pod was Ready 7 minutes 40 seconds later,
+  on a GPU node that was already up. The timeline below comes from the run's Kubernetes events and
+  the pod's recorded Ready time.</p>
+
+  <div class="kpis three">
+    <div class="kpi"><div class="label">Scale-up to Ready</div><div class="value">7m 40s</div><div class="sub">on a node that already existed</div></div>
+    <div class="kpi"><div class="label">Container image</div><div class="value">9.1 GB</div><div class="sub">compressed amd64 layers</div></div>
+    <div class="kpi"><div class="label">Model weights</div><div class="value">5.6 GB</div><div class="sub">each new pod starts with an empty cache</div></div>
+  </div>
+
+  <h2>The second replica, minute by minute</h2>
+  <figure class="timeline" aria-labelledby="timeline-caption">
+    <div class="legend-row">
+      <span><i class="swatch pull"></i>Image pull</span>
+      <span><i class="swatch model"></i>Container start to Ready</span>
+    </div>
+    <div id="timeline" class="timeline-plot"></div>
+    <div id="timeline-tip" class="tip" role="status" hidden></div>
+    <figcaption id="timeline-caption" class="note">Minutes after the HPA asked for two replicas at
+    14:13:51 UTC on 23 August 2026. Both GPU nodes were already up, so no node provisioning is included.
+    Event times are recorded to the second.</figcaption>
+  </figure>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Milestone</th><th class="num">Time (UTC)</th><th class="num">Since scale-up</th></tr></thead>
+      <tbody>
+        <tr><td>HPA asks for two replicas; pod created and scheduled</td><td class="num">14:13:51</td><td class="num">0s</td></tr>
+        <tr><td>Image pull starts</td><td class="num">14:13:52</td><td class="num">1s</td></tr>
+        <tr><td>Image pulled (kubelet reports 4m 38.3s)</td><td class="num">14:18:30</td><td class="num">4m 39s</td></tr>
+        <tr><td>Container started</td><td class="num">14:18:35</td><td class="num">4m 44s</td></tr>
+        <tr><td>Pod Ready</td><td class="num">14:21:31</td><td class="num">7m 40s</td></tr>
+        <tr><td>Last request of the load test finishes (from the run notes)</td><td class="num">about 14:22:09</td><td class="num">about 8m 18s</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="source">Source: the <a href="https://github.com/vjsairam/ai-inference-cost-optimization/tree/main/results/published/20260823T141339Z-8d3374c4-t5-autoscale">published run</a>.
+  Pull and start times are from <code>operator/events-final.json</code>, Ready from
+  <code>operator/pod-ready-time.txt</code>, and the last request from the run's README. vLLM 0.27.1
+  serving Qwen2.5-7B-Instruct-AWQ, one NVIDIA L4 per replica on g6.xlarge nodes, EKS 1.34,
+  us-east-1. Image and model sizes checked against Docker Hub and Hugging Face on 11 October 2026.</p>
+
+  <h2>What the timestamps show</h2>
+  <p>The pod was created and scheduled in the same second as the HPA's request. Its node was already
+  up, so none of this was waiting for a machine.</p>
+  <p>The kubelet reported 4m 38s to pull <code>vllm/vllm-openai</code> from Docker Hub, a figure that
+  covers downloading and unpacking. The pinned amd64 image is 9.1 GB of compressed layers, and one
+  layer alone is 4.6 GB. The first replica, on the other node, reported 4m 40s for the same pull,
+  so the two took about the same time.</p>
+  <p>The container started 5 seconds after the pull. From there to Ready took 2m 56s. In this lab
+  the Hugging Face cache is an <code>emptyDir</code>, so each new pod starts without the 5.6 GB of
+  weights and has to fetch them. That window also covers loading onto the GPU, vLLM's warmup, and
+  the health checks, which run every 10 seconds. The run didn't keep vLLM's logs, so I can't split
+  the 2m 56s further.</p>
+
+  <h2>Why it matters</h2>
+  <p>Until the new pod is Ready, the existing replica carries all the traffic. In this run it coped:
+  requests queued, and p95 end-to-end latency was 832 ms against a 6 second target. The second
+  replica arrived as the test was ending, about 38 seconds before the last request finished. Under
+  heavier traffic, the service could have run short of capacity during that wait. This
+  was sustained load; I didn't test bursts.</p>
+  <p>Both GPU nodes stayed up the whole time, so adding a pod didn't change the bill. Faster startup
+  saves money only when it means paying for fewer GPU node-hours, for example by scaling nodes down
+  sooner or keeping fewer spare replicas warm.</p>
+
+  <h2>What I'm testing next</h2>
+  <p>One change at a time against this baseline, starting with the biggest piece:</p>
+  <ul class="plain">
+    <li>The same pinned image already on the node before the pod needs it, compared with pulling it
+    from scratch.</li>
+    <li>Keeping the model weights on the node or a shared volume instead of downloading them on
+    every start.</li>
+    <li>Keeping timestamped vLLM logs to narrow down the 2m 56s, and timing the weight download
+    on its own.</li>
+  </ul>
+  <p>Results will go into the lab repo next to this run.</p>
+
+  <h2>Check your own cluster</h2>
+  <p>Run these against a running pod that started recently, replacing POD, NAMESPACE and CONTAINER.
+  Kubernetes keeps events for an hour by default, so look soon after a scale-up. Pod conditions and
+  the start time describe the latest transition, so a restarted container shows its last start.</p>
+  <ol class="steps">
+    <li><strong>How long the image pull took.</strong> The kubelet reports it in the event message.
+    <pre><code>kubectl get events -n NAMESPACE \
+  --field-selector involvedObject.name=POD,reason=Pulled</code></pre></li>
+    <li><strong>When the pod was scheduled, started and became Ready.</strong>
+    <pre><code>kubectl get pod POD -n NAMESPACE -o jsonpath=\
+'{range .status.conditions[*]}{.type}{"\t"}{.status}{"\t"}{.lastTransitionTime}{"\n"}{end}'
+kubectl get pod POD -n NAMESPACE -o jsonpath=\
+'{.status.containerStatuses[?(@.name=="CONTAINER")].state.running.startedAt}{"\n"}'</code></pre></li>
+    <li><strong>What vLLM spent its time on.</strong> vLLM 0.27.1 logs model loading (including the
+    weight download, when there is one), CUDA graph capture and engine startup. The timers overlap,
+    so don't add them up.
+    <pre><code>kubectl logs POD -n NAMESPACE -c CONTAINER --timestamps | grep -E \
+  "Model loading took|Graph capturing finished|init engine"</code></pre></li>
+    <li><strong>Whether each new pod downloads the model again.</strong> If the Hugging Face cache is
+    an <code>emptyDir</code> or isn't mounted, a new pod starts without the weights. An
+    <code>emptyDir</code> does survive container restarts inside the same pod, and some setups bake
+    the weights into the image. To be sure, look inside a freshly started pod: if the cache
+    directory starts empty and fills up during startup, it's downloading.</li>
+    <li><strong>Where the image comes from and how big it is.</strong> A multi-gigabyte image pulled
+    from a public registry onto a fresh node is worth timing on its own.</li>
+  </ol>
+
+  <div class="contact">
+    <a href="mailto:sai@vjsairam.com">sai@vjsairam.com</a>
+    <a href="https://github.com/vjsairam">GitHub</a>
+    <span>11 October 2026</span>
+  </div>
+</main>
+</body>
+</html>
