@@ -36,6 +36,12 @@
   <p><a href="notes/vllm-startup/">Where 7m 40s of vLLM startup went</a>: one KEDA scale-up,
   second by second, from the run's events and pod status, and how to check your own cluster.</p>
 
+  <h2>Tools</h2>
+  <p><a href="https://github.com/vjsairam/inferaudit">inferaudit</a> is a read-only review of how
+  AI models are served on a Kubernetes cluster: startup timelines from Kubernetes events and
+  pod status, plus reliability and access checks on the configuration, in one HTML report. Here's
+  the <a href="inferaudit/sample/">sample report</a>, built from a reconstructed snapshot of my lab.</p>
+
   <h2>Consulting</h2>
   <p>I take on short, fixed-scope engagements: inference cost assessments, serving stack
   reviews, and platform builds. If your GPU bill is growing faster than your traffic,

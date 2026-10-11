@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>inferaudit report: Inference lab on EKS, 23 August 2026</title>
+<style>
+:root {
+  --bg: #ffffff; --paper: #f5f4f0; --ink: #262b33; --head: #13294b; --muted: #5d6673;
+  --rule: #d8dbdf; --grid: #e6e8eb; --link: #1d4e89;
+  --pull: #c25e1c; --load: #008c7a; --wait: #7d8591; --warn: #a8321f;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111317; --paper: #191c21; --ink: #dde1e6; --head: #e8edf3; --muted: #98a1ac;
+    --rule: #2d323a; --grid: #23272e; --link: #8db4e2;
+    --pull: #d9772f; --load: #29a295; --wait: #66707e; --warn: #f08a72;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 20px 56px; }
+h1, h3 { font-family: var(--serif); color: var(--head); font-weight: 600; }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 6px; overflow-wrap: anywhere; }
+h2 { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted);
+  margin: 44px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+h3 { font-size: 1.05rem; margin: 0 0 2px; overflow-wrap: anywhere; }
+a { color: var(--link); }
+code { font-family: var(--mono); font-size: 0.86em; overflow-wrap: anywhere; }
+.kicker { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
+.meta { color: var(--muted); font-size: 0.9rem; margin: 0; }
+.lede { font-family: var(--serif); font-size: 1.3rem; line-height: 1.4; color: var(--head); margin: 22px 0 0; max-width: 40em; }
+.banner { margin: 16px 0 0; padding: 8px 12px; border-left: 3px solid var(--pull); background: var(--paper); font-size: 0.9rem; }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--rule); margin-top: 26px; }
+.kpi { padding: 12px 16px 14px; border-right: 1px solid var(--rule); min-width: 0; }
+.kpi:last-child { border-right: 0; }
+.kpi .label { font-size: 0.74rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.kpi .value { font-size: 1.7rem; font-weight: 600; color: var(--head); line-height: 1.25; }
+.kpi .sub { font-size: 0.8rem; color: var(--muted); overflow-wrap: anywhere; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 0.84rem; color: var(--muted); margin: 0 0 14px; }
+.key { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.wait { background: var(--wait); } .pull { background: var(--pull); } .load { background: var(--load); }
+.workload { margin: 0 0 30px; }
+.workload .sub { color: var(--muted); font-size: 0.86rem; margin: 0 0 10px; overflow-wrap: anywhere; }
+.rows { position: relative; }
+.row { display: grid; grid-template-columns: 210px 1fr 74px; gap: 12px; align-items: center; min-height: 34px; margin-bottom: 6px; }
+.who { font-size: 0.84rem; line-height: 1.25; min-width: 0; }
+.who b { display: block; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.who span { color: var(--muted); font-size: 0.76rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.track { position: relative; height: 34px; }
+.track .grid { position: absolute; top: 3px; bottom: 3px; width: 1px; background: var(--grid); }
+.seg { position: absolute; top: 7px; height: 20px; border-radius: 3px; border-left: 2px solid var(--bg); }
+.total { font-size: 0.86rem; font-weight: 600; color: var(--head); text-align: right; white-space: nowrap; }
+.total.unknown { font-weight: 400; color: var(--muted); }
+.axis { display: grid; grid-template-columns: 210px 1fr 74px; gap: 12px; }
+.ticks { position: relative; height: 18px; font-size: 0.74rem; color: var(--muted); }
+.ticks span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.ticks span:first-child { transform: none; }
+.flag { color: var(--muted); font-size: 0.8rem; margin: 2px 0 0 222px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
+td code { white-space: nowrap; overflow-wrap: normal; }
+td.num, th.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+details { margin-top: 8px; font-size: 0.86rem; }
+summary { cursor: pointer; color: var(--muted); }
+.table-wrap { overflow-x: auto; }
+.finding { border-top: 1px solid var(--rule); padding: 14px 0 12px; display: grid; grid-template-columns: 74px 1fr; gap: 14px; }
+.badge { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 0; }
+.badge.check { color: var(--warn); }
+.badge.note { color: var(--muted); }
+.finding h4 { font-family: var(--sans); font-size: 0.98rem; color: var(--head); margin: 0 0 2px; overflow-wrap: anywhere; }
+.finding .where { color: var(--muted); font-size: 0.8rem; margin-bottom: 6px; overflow-wrap: anywhere; }
+.finding p { margin: 0 0 5px; font-size: 0.9rem; overflow-wrap: anywhere; }
+.finding p b { font-weight: 600; color: var(--head); }
+.gpubar { position: relative; height: 10px; background: var(--grid); border: 1px solid var(--rule); border-radius: 2px; min-width: 80px; }
+.gpubar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--load); border-radius: 2px; }
+ul.gaps { padding-left: 18px; font-size: 0.9rem; }
+footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 0.82rem; }
+@media (max-width: 720px) {
+  main { padding-top: 24px; }
+  h1 { font-size: 1.6rem; }
+  .kpis { grid-template-columns: 1fr 1fr; }
+  .kpi:nth-child(2) { border-right: 0; }
+  .kpi:nth-child(-n+2) { border-bottom: 1px solid var(--rule); }
+  .row, .axis { grid-template-columns: 1fr 64px; gap: 4px 10px; }
+  .row .who { grid-column: 1 / -1; }
+  .axis > div:first-child { display: none; }
+  .flag { margin-left: 0; }
+  .finding { grid-template-columns: 1fr; gap: 4px; }
+}
+</style>
+</head>
+<body>
+<main>
+  <div class="kicker">inferaudit report</div>
+  <h1>Inference lab on EKS, 23 August 2026</h1>
+  <p class="meta">Read from a saved snapshot, namespace model-serving.</p>
+  <p class="banner">Sample report. Rebuilt from the lab&#39;s vLLM Helm chart and the events recorded in the 23 August 2026 KEDA run of ai-inference-cost-optimization, not a live scan. Pod and node objects are reconstructed from those records.</p>
+  <p class="lede">The slowest pod took 7m 40s from creation to its latest Ready transition, 4m 38s of it pulling the image.</p>
+
+  <div class="kpis">
+    <div class="kpi"><div class="label">Serving workloads</div><div class="value">1</div><div class="sub">2 pods running or starting</div></div>
+    <div class="kpi"><div class="label">Slowest to Ready</div><div class="value">7m 40s</div><div class="sub">model-serving/vllm-5f577ccf85-j27ct, created to latest Ready</div></div>
+    <div class="kpi"><div class="label">GPUs requested</div><div class="value">2 of 2</div><div class="sub">by pods in this namespace, on 2 GPU nodes</div></div>
+    <div class="kpi"><div class="label">Worth checking</div><div class="value">4</div><div class="sub">plus 0 notes</div></div>
+  </div>
+
+  <h2>Startup, pod by pod</h2>
+  
+  <div class="legend">
+    <span><i class="key wait"></i>Created to image pull</span>
+    <span><i class="key pull"></i>Image pull</span>
+    <span><i class="key load"></i>Container start to latest Ready</span>
+  </div>
+  
+  <section class="workload">
+    <h3>model-serving/vllm</h3>
+    <p class="sub">Deployment · vLLM · 1 to 2 replicas (KEDA ScaledObject vllm) · template image <code>vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967</code></p>
+    <div class="rows">
+      
+      <div class="row">
+        <div class="who"><b title="vllm-5f577ccf85-llq95">vllm-5f577ccf85-llq95</b><span title="ip-10-42-10-131.ec2.internal">ip-10-42-10-131.ec2.internal</span></div>
+        <div class="track" role="img" aria-label="vllm-5f577ccf85-llq95: Before the image pull: 1s. Image pull: the kubelet reported 4m 40s. Running.">
+          <div class="grid" style="left: 0.00%"></div><div class="grid" style="left: 12.50%"></div><div class="grid" style="left: 25.00%"></div><div class="grid" style="left: 37.50%"></div><div class="grid" style="left: 50.00%"></div><div class="grid" style="left: 62.50%"></div><div class="grid" style="left: 75.00%"></div><div class="grid" style="left: 87.50%"></div><div class="grid" style="left: 100.00%"></div>
+          <div class="seg wait" style="left: 0.00%; width: 0.21%" title="Before the image pull: 1s"></div><div class="seg pull" style="left: 0.21%; width: 58.12%" title="Image pull: the kubelet reported 4m 40s"></div>
+        </div>
+        <div class="total unknown">Running</div>
+      </div>
+      
+      
+      
+      
+      <div class="row">
+        <div class="who"><b title="vllm-5f577ccf85-j27ct">vllm-5f577ccf85-j27ct</b><span title="ip-10-42-11-99.ec2.internal">ip-10-42-11-99.ec2.internal</span></div>
+        <div class="track" role="img" aria-label="vllm-5f577ccf85-j27ct: Before the image pull: 1s. Image pull: the kubelet reported 4m 38s. Container start to latest Ready: 2m 56s. Latest Ready transition after 7m 40s.">
+          <div class="grid" style="left: 0.00%"></div><div class="grid" style="left: 12.50%"></div><div class="grid" style="left: 25.00%"></div><div class="grid" style="left: 37.50%"></div><div class="grid" style="left: 50.00%"></div><div class="grid" style="left: 62.50%"></div><div class="grid" style="left: 75.00%"></div><div class="grid" style="left: 87.50%"></div><div class="grid" style="left: 100.00%"></div>
+          <div class="seg wait" style="left: 0.00%; width: 0.21%" title="Before the image pull: 1s"></div><div class="seg pull" style="left: 0.21%; width: 57.92%" title="Image pull: the kubelet reported 4m 38s"></div><div class="seg load" style="left: 59.17%; width: 36.67%" title="Container start to latest Ready: 2m 56s"></div>
+        </div>
+        <div class="total">7m 40s</div>
+      </div>
+      
+      
+      
+      
+      <div class="axis"><div></div><div class="ticks"><span style="left: 0.00%">0</span><span style="left: 12.50%">1m</span><span style="left: 25.00%">2m</span><span style="left: 37.50%">3m</span><span style="left: 50.00%">4m</span><span style="left: 62.50%">5m</span><span style="left: 75.00%">6m</span><span style="left: 87.50%">7m</span><span style="left: 100.00%">8m</span></div><div></div></div>
+    </div>
+    <details>
+      <summary>Times as a table</summary>
+      <div class="table-wrap" role="region" tabindex="0" aria-label="Startup times for model-serving/vllm"><table>
+        <thead><tr><th scope="col">Pod</th><th scope="col" class="num">Image pull</th><th scope="col" class="num">Start to latest Ready</th><th scope="col" class="num">Created to latest Ready</th><th scope="col">State</th></tr></thead>
+        <tbody><tr><td><code>vllm-5f577ccf85-llq95</code></td><td class="num">4m 40s</td><td class="num">unknown</td><td class="num">unknown</td><td>Running</td></tr><tr><td><code>vllm-5f577ccf85-j27ct</code></td><td class="num">4m 38s</td><td class="num">2m 56s</td><td class="num">7m 40s</td><td>Ready</td></tr></tbody>
+      </table></div>
+    </details>
+  </section>
+  
+  
+
+  <h2>Findings</h2>
+  
+  
+  <h3 style="margin: 20px 0 6px">Startup</h3>
+  
+  <div class="finding">
+    <div class="badge check">! Check</div>
+    <div>
+      <h4>Image pull took 4m 40s</h4>
+      <div class="where">model-serving/deployment/vllm</div>
+      <p>The kubelet reported pulling vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967 (9.1 GB) in 4m 40s for pod vllm-5f577ccf85-llq95 on node ip-10-42-10-131.ec2.internal.</p>
+      <p><b>Why it matters.</b> A new replica on a node without this image waits for the pull before the server can start. How long depends on the registry, the network and what the node already has cached.</p>
+      <p><b>Next.</b> Time the same image from a registry in the cluster&#39;s region, and with the image already on the node, then compare.</p>
+    </div>
+  </div>
+  
+  <div class="finding">
+    <div class="badge check">! Check</div>
+    <div>
+      <h4>Container start to latest Ready took 2m 56s</h4>
+      <div class="where">model-serving/deployment/vllm</div>
+      <p>Pod vllm-5f577ccf85-j27ct started its vllm container at 14:18:35 UTC, and its Ready condition last turned true at 14:21:31 UTC.</p>
+      <p><b>Why it matters.</b> Model download, loading and warmup usually happen in this window. Pod status keeps only the latest Ready transition, so if readiness dropped and came back since, the startup itself was shorter.</p>
+      <p><b>Next.</b> Read the engine&#39;s startup log lines to see which part dominates. For vLLM, look for &#34;Model loading took&#34; and &#34;init engine&#34;.</p>
+    </div>
+  </div>
+  
+  <div class="finding">
+    <div class="badge check">! Check</div>
+    <div>
+      <h4>The model cache isn&#39;t kept between pods</h4>
+      <div class="where">model-serving/deployment/vllm</div>
+      <p>vLLM serves Qwen/Qwen2.5-7B-Instruct-AWQ, and the Hugging Face cache at /root/.cache/huggingface/hub is on an emptyDir.</p>
+      <p><b>Why it matters.</b> If the weights come from the Hub, every new replica downloads them again before it can load them, which adds to scale-up time.</p>
+      <p><b>Next.</b> Confirm where the weights come from (the image, an init container or the Hub), then compare startup with a cache that outlives the pod.</p>
+    </div>
+  </div>
+  
+  
+  <h3 style="margin: 20px 0 6px">Reliability</h3>
+  
+  <div class="finding">
+    <div class="badge check">! Check</div>
+    <div>
+      <h4>Can drop to a single replica</h4>
+      <div class="where">model-serving/deployment/vllm</div>
+      <p>KEDA ScaledObject vllm is set to 1 to 2 replicas.</p>
+      <p><b>Why it matters.</b> Losing the only serving replica interrupts requests until a replacement is Ready, which can take as long as the startups above.</p>
+      <p><b>Next.</b> If this model needs to stay up, keep a second replica or a fallback route.</p>
+    </div>
+  </div>
+  
+  
+
+  
+  <h2>GPU nodes</h2>
+  <div class="table-wrap" role="region" tabindex="0" aria-label="GPU nodes"><table>
+    <thead><tr><th scope="col">Node</th><th scope="col">Instance type</th><th scope="col" class="num">GPUs</th><th scope="col" class="num">Requested here</th><th scope="col" style="width: 30%">Requested share</th></tr></thead>
+    <tbody><tr><td><code>ip-10-42-10-131.ec2.internal</code></td><td>g6.xlarge</td><td class="num">1</td><td class="num">1</td><td><div class="gpubar" role="img" aria-label="1 of 1 GPUs requested"><i style="width: 100.00%"></i></div></td></tr><tr><td><code>ip-10-42-11-99.ec2.internal</code></td><td>g6.xlarge</td><td class="num">1</td><td class="num">1</td><td><div class="gpubar" role="img" aria-label="1 of 1 GPUs requested"><i style="width: 100.00%"></i></div></td></tr></tbody>
+  </table></div>
+  
+
+  <h2>What this report can't see</h2>
+  <ul class="gaps">
+    
+    <li>GPU utilisation. Requests show what pods reserved, not how busy the GPUs are. Only nvidia.com/gpu and amd.com/gpu are counted. With one namespace read, requests from other namespaces aren't counted, so spare GPUs aren't reported.</li>
+    <li>First starts. Pod status keeps only the latest Ready transition, so a pod whose readiness dropped and came back looks slower than it started, and a restarted pod's first start is gone.</li>
+    <li>Settings outside the pod spec. vLLM flags set inside a shell script or a config file aren't parsed, and only one serving container per pod is checked.</li>
+    <li>Network reachability. Exposure findings come from Service settings; nothing was probed.</li>
+    <li>Older starts. Kubernetes keeps events for about an hour by default, so image pull times for older pods are usually gone.</li>
+  </ul>
+
+  <footer>
+    inferaudit a7acc13 · read-only, built from <code>kubectl get</code> output ·
+    <a href="https://github.com/vjsairam/inferaudit">github.com/vjsairam/inferaudit</a> · made by Sai Ram, <a href="https://vjsairam.com">vjsairam.com</a>
+  </footer>
+</main>
+</body>
+</html>
