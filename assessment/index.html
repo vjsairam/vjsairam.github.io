@@ -21,19 +21,20 @@
 
   <h2>What you get</h2>
   <ul>
-    <li>A cost baseline: what one successful task costs today, worked out from your bills and a
-    sample of real requests, counting retries, failed attempts, tool calls, idle capacity and
-    the effort to run it where they apply.</li>
+    <li>A cost baseline: an estimate of what one successful task costs today, worked out from
+    your bills and an agreed sample of real requests, counting retries, failed attempts, tool
+    calls, idle capacity and the effort to run it where they apply.</li>
     <li>A quality baseline on your own tasks. You receive the evaluation code, scoring rules and
     instructions to rerun it on the agreed task sample.</li>
     <li>Your options measured on the same tasks against the same targets: tune what you have
     (routing, caching, prompt size, a smaller managed model), run your own model, or a mix.</li>
-    <li>A recommendation, and the volume or price at which it would change. It may be to keep
-    your current setup.</li>
+    <li>A recommendation and, where the evidence supports one, the volume or price at which it
+    would change. It may be to keep your current setup.</li>
     <li>If your own model or a mix comes out ahead: a capacity and reliability plan covering
-    replicas, failover and how fast it can scale.</li>
-    <li>A written report, the cost model and the evidence behind every number, and a walkthrough
-    with your team.</li>
+    replicas, failover and scaling, keeping what was measured in testing apart from what is
+    projected for production.</li>
+    <li>A written report, the cost model with the sources and assumptions behind each figure,
+    and a walkthrough with your team.</li>
   </ul>
   <p>The <a href="../dashboard/">sample results dashboard</a> shows what the evidence looks like,
   built from my own benchmark runs.</p>
@@ -59,21 +60,21 @@
     through at cost.</li>
   </ul>
   <p>Billing exports and redacted traces are enough to start. Tests run in an agreed environment.
-  Before receiving data, we agree where it may be processed, what you retain, and when my copies
-  are deleted.</p>
-
-  <h2>Fee</h2>
-  <!-- TODO before publishing: set the fee and payment terms. -->
-  <p>A fixed fee of TODO-FEE, agreed before we start. Implementation and follow-up reviews are
-  quoted separately.</p>
+  Before you send anything, we agree how data is transferred, where it is processed, who can
+  see it, what it may be used for, and whether any cloud or model provider handles it,
+  including that provider's retention and training settings.</p>
+  <p>I delete what you sent me, and working files that contain it, within 30 days of delivering
+  the report, or within 30 days of a cancellation. If the work hasn't started 30 days after the
+  data arrives, I delete it then and you can send it again when we're ready. We can agree a
+  shorter window before you send anything, you can ask for earlier deletion at any time, and I
+  confirm in writing what was deleted and whether any copy remains.</p>
 
   <h2>Who does the work</h2>
   <p>Me, Sai Ram. I have spent 15+ years in infrastructure and platform engineering, hold CKA and
   CKS, and contribute to <a href="https://github.com/kedacore/keda/pulls?q=is%3Apr+author%3Avjsairam+is%3Amerged">KEDA</a>,
   the Kubernetes autoscaler. The method is public in my
   <a href="https://github.com/vjsairam/ai-inference-cost-optimization">inference cost benchmark</a>.
-  I'm based in Chennai, India, and available for remote engagements during TODO-HOURS
-  (UTC).</p>
+  I'm based in Chennai, India, and work remotely.</p>
 
   <div class="cta">
     <p><strong>To start,</strong> email three lines: the workload, its rough monthly volume, and
