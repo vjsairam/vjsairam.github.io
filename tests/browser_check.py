@@ -32,7 +32,7 @@ def main() -> int:
     failures = []
     with sync_playwright() as p:
         browser = p.chromium.launch()
-        for path in ("/", "/explorer/", "/dashboard/", "/notes/vllm-startup/"):
+        for path in ("/", "/explorer/", "/dashboard/", "/notes/vllm-startup/", "/inferaudit/sample/"):
             page = browser.new_page(viewport={"width": 1280, "height": 900})
             errors = []
             page.on("pageerror", lambda e: errors.append(str(e)))
