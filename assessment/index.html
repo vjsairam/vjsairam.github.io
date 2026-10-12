@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI workload cost assessment | Sai Ram</title>
+<meta name="description" content="A fixed five-day assessment of one AI workload: its cost per successful task, and the agreed options compared against your quality, latency and cost targets.">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<main>
+  <p class="crumb"><a href="../">Sai Ram</a></p>
+  <h1>AI workload cost assessment</h1>
+  <p class="lede">Five working days to measure one AI workload's cost per successful task and
+  compare the agreed options against your quality, latency and cost targets.</p>
+
+  <h2>Who it is for</h2>
+  <p>Teams with an AI feature or agent in production, or close to launch, whose AI costs are
+  growing or who need a cost estimate before launch. It works best when the workload has real
+  traffic and one person owns the decision.</p>
+
+  <h2>What you get</h2>
+  <ul>
+    <li>A cost baseline: an estimate of what one successful task costs today, worked out from
+    your bills and an agreed sample of real requests, counting retries, failed attempts, tool
+    calls, idle capacity and the effort to run it where they apply.</li>
+    <li>A quality baseline on your own tasks. You receive the evaluation code, scoring rules and
+    instructions to rerun it on the agreed task sample.</li>
+    <li>Your options measured on the same tasks against the same targets: tune what you have
+    (routing, caching, prompt size, a smaller managed model), run your own model, or a mix.</li>
+    <li>A recommendation and, where the evidence supports one, the volume or price at which it
+    would change. It may be to keep your current setup.</li>
+    <li>If your own model or a mix comes out ahead: a capacity and reliability plan covering
+    replicas, failover and scaling, keeping what was measured in testing apart from what is
+    projected for production.</li>
+    <li>A written report, the cost model with the sources and assumptions behind each figure,
+    and a walkthrough with your team.</li>
+  </ul>
+  <p>The <a href="../dashboard/">sample results dashboard</a> shows what the evidence looks like,
+  built from my own benchmark runs.</p>
+
+  <h2>How the five days run</h2>
+  <ul>
+    <li>Before day one: we agree what counts as a successful task, which options to test, and
+    which costs to include. The five working days start once usable data, scoring rules and test
+    access are ready.</li>
+    <li>Day 1: cost and quality baseline.</li>
+    <li>Days 2 and 3: the alternatives, measured on your tasks.</li>
+    <li>Day 4: capacity, failure and cost-at-volume checks on the leading option.</li>
+    <li>Day 5: written recommendation and walkthrough.</li>
+  </ul>
+
+  <h2>What I need from you</h2>
+  <ul>
+    <li>Usage and billing exports for the workload, ideally the last 30 days.</li>
+    <li>A few hundred representative requests with the answers you would accept, redacted as you
+    see fit.</li>
+    <li>Your latency and quality targets, or the person who can set them.</li>
+    <li>If we test running your own model, GPU time in your cloud account, or in mine passed
+    through at cost.</li>
+  </ul>
+  <p>Billing exports and redacted traces are enough to start. Tests run in an agreed environment.
+  Before you send anything, we agree how data is transferred, where it is processed, who can
+  see it, what it may be used for, and whether any cloud or model provider handles it,
+  including that provider's retention and training settings.</p>
+  <p>I delete what you sent me, and working files that contain it, within 30 days of delivering
+  the report, or within 30 days of a cancellation. If the work hasn't started 30 days after the
+  data arrives, I delete it then and you can send it again when we're ready. We can agree a
+  shorter window before you send anything, you can ask for earlier deletion at any time, and I
+  confirm in writing what was deleted and whether any copy remains.</p>
+
+  <h2>Who does the work</h2>
+  <p>Me, Sai Ram. I have spent 15+ years in infrastructure and platform engineering, hold CKA and
+  CKS, and contribute to <a href="https://github.com/kedacore/keda/pulls?q=is%3Apr+author%3Avjsairam+is%3Amerged">KEDA</a>,
+  the Kubernetes autoscaler. The method is public in my
+  <a href="https://github.com/vjsairam/ai-inference-cost-optimization">inference cost benchmark</a>.
+  I'm based in Chennai, India, and work remotely.</p>
+
+  <div class="cta">
+    <p><strong>To start,</strong> email three lines: the workload, its rough monthly volume, and
+    what it runs on today. I aim to reply by the next working day, Monday to Friday, India time,
+    with whether it fits and a possible start date.</p>
+    <p><a class="button" href="mailto:sai@vjsairam.com?subject=AI%20workload%20cost%20assessment">Email sai@vjsairam.com</a>
+    <a href="../explorer/">Try the cost explorer</a></p>
+  </div>
+
+  <footer class="contact">
+    <a href="../">Home</a>
+    <a href="../explorer/">Cost explorer</a>
+    <a href="../dashboard/">Sample dashboard</a>
+    <a href="https://github.com/vjsairam">GitHub</a>
+  </footer>
+</main>
+</body>
+</html>

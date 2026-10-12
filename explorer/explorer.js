@@ -212,6 +212,7 @@
     const s = readState();
     const volume = VOLUMES[s.volume];
     document.getElementById("volume-out").textContent = fmtVolume(volume);
+    form.elements.volume.setAttribute("aria-valuetext", `${fmtVolume(volume)} requests a month`);
     const row = gridRow(s, volume);
     const hosted = measured(s.task, "t0");
     const own = measured(s.task, "t1");
